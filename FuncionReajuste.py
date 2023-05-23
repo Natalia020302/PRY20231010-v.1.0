@@ -28,8 +28,8 @@ for nombre_archivo in nuevos_archivos:
     ancho, alto = imagen.size
     
     if extension in ['.jpg', '.jpeg', '.png', '.gif']:
-        nuevo_ancho = 1920
-        nuevo_alto = 1080
+        nuevo_ancho = 500
+        nuevo_alto = 500
         
         # Ajustar las nuevas dimensiones para mantener la relación de aspecto
         relacion_aspecto = ancho / alto
@@ -42,7 +42,7 @@ for nombre_archivo in nuevos_archivos:
         imagen_redimensionada = imagen.resize((nuevo_ancho, nuevo_alto), resample=Image.LANCZOS)
         
         # Aumentar el contraste de la imagen
-        factor_contraste = 1.5  # Ajusta este valor para aumentar o disminuir el contraste
+        factor_contraste = 3  # Ajusta este valor para aumentar o disminuir el contraste
         realce_contraste = ImageEnhance.Contrast(imagen_redimensionada)
         imagen_contraste = realce_contraste.enhance(factor_contraste)
         
