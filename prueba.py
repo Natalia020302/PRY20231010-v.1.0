@@ -1,2 +1,0 @@
-print("holadd")
-hghjhu

@@ -1,0 +1,11 @@
+py -3.6  -m venv myvenv
+myvenv\Scripts\activate
+
+!pip install tensorflow==1.2.1
+!pip install keras==2.0.5
+!pip install h5py==2.10.0
+!pip install sklearn
+!pip install opencv-python
+!pip install seaborn
+!pip install matplotlib
+!pip install numpy
