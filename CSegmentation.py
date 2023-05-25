@@ -11,6 +11,11 @@ def segment_images(source_folder, destination_folder):
     image_files = [f for f in os.listdir(source_folder) if f.endswith(('.jpg', '.jpeg', '.png'))]
 
     for image_file in image_files:
+        # Verifica si la imagen ya ha sido procesada anteriormente
+        if image_file.startswith('listo'):
+            print(f"La imagen {image_file} ya ha sido procesada. Se omite.")
+            continue
+        
         # Lee la imagen
         image_path = os.path.join(source_folder, image_file)
         img = cv2.imread(image_path)
@@ -28,15 +33,22 @@ def segment_images(source_folder, destination_folder):
 
         # Aplica operaciones morfológicas para mejorar la segmentación
         kernel = np.ones((3, 3), np.uint8)
-        threshold = cv2.morphologyEx(threshold, cv2.MORPH_OPEN, kernel, iterations=8)
-        threshold = cv2.morphologyEx(threshold, cv2.MORPH_CLOSE, kernel, iterations=8)
+        threshold = cv2.morphologyEx(threshold, cv2.MORPH_OPEN, kernel, iterations=6)
+        threshold = cv2.morphologyEx(threshold, cv2.MORPH_CLOSE, kernel, iterations=6)
 
 
         # Aplica la máscara a la imagen original para obtener la parte segmentada en color
         segmented_img = cv2.bitwise_and(img, img, mask=threshold)
 
+        # Cambia el nombre de la imagen origen procesada agregando el prefijo "listo"
+        processed_image_name = 'listo_' + image_file
+        processed_image_path = os.path.join(source_folder, processed_image_name)
+        os.rename(image_path, processed_image_path)
+        print(f"Imagen procesada renombrada: {processed_image_path}")
+
         # Guarda la imagen segmentada en el directorio de destino
-        destination_path = os.path.join(destination_folder, image_file)
+        segmented_image_name = 'segmentada_' + image_file
+        destination_path = os.path.join(destination_folder, segmented_image_name)
         cv2.imwrite(destination_path, segmented_img)
 
         print(f"Imagen segmentada guardada: {destination_path}")
