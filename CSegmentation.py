@@ -36,9 +36,24 @@ def segment_images(source_folder, destination_folder):
         threshold = cv2.morphologyEx(threshold, cv2.MORPH_OPEN, kernel, iterations=6)
         threshold = cv2.morphologyEx(threshold, cv2.MORPH_CLOSE, kernel, iterations=6)
 
+        # Encuentra los contornos de la segmentación
+        contours, _ = cv2.findContours(threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+        # Encuentra el contorno más grande
+        largest_contour = max(contours, key=cv2.contourArea)
+
+        # Crea una máscara en blanco del tamaño de la imagen original
+        mask = np.zeros_like(img)
+
+        # Dibuja el contorno en la máscara
+        cv2.drawContours(mask, [largest_contour], 0, (255, 255, 255), thickness=cv2.FILLED)
+
+
+
 
         # Aplica la máscara a la imagen original para obtener la parte segmentada en color
-        segmented_img = cv2.bitwise_and(img, img, mask=threshold)
+        #segmented_img = cv2.bitwise_and(img, img, mask=threshold)
+        segmented_img = cv2.bitwise_and(img, mask)
 
         # Cambia el nombre de la imagen origen procesada agregando el prefijo "listo"
         processed_image_name = 'listo_' + image_file
@@ -47,11 +62,15 @@ def segment_images(source_folder, destination_folder):
         print(f"Imagen procesada renombrada: {processed_image_path}")
 
         # Guarda la imagen segmentada en el directorio de destino
-        segmented_image_name = 'segmentada_' + image_file
-        destination_path = os.path.join(destination_folder, segmented_image_name)
-        cv2.imwrite(destination_path, segmented_img)
+        #segmented_image_name = 'segmentada_' + image_file
+        segmented_image_name = 'segmentada_' + image_file.split('.')[0] + '.png'
+        segmented_image_path = os.path.join(destination_folder, segmented_image_name)
+        #destination_path = os.path.join(destination_folder, segmented_image_name)
+        #cv2.imwrite(destination_path, segmented_img)
 
-        print(f"Imagen segmentada guardada: {destination_path}")
+        #print(f"Imagen segmentada guardada: {destination_path}")
+        cv2.imwrite(segmented_image_path, segmented_img, [cv2.IMWRITE_PNG_COMPRESSION, 0])
+        print(f"Parte segmentada guardada: {segmented_image_path}")
 
     print("Segmentación de imágenes completada.")
 
