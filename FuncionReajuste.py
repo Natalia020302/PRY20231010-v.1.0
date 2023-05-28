@@ -42,7 +42,7 @@ for nombre_archivo in nuevos_archivos:
         imagen_redimensionada = imagen.resize((nuevo_ancho, nuevo_alto), resample=Image.LANCZOS)
         
         # Aumentar el contraste de la imagen
-        factor_contraste = 3  # Ajusta este valor para aumentar o disminuir el contraste
+        factor_contraste = 2  # Ajusta este valor para aumentar o disminuir el contraste
         realce_contraste = ImageEnhance.Contrast(imagen_redimensionada)
         imagen_contraste = realce_contraste.enhance(factor_contraste)
         
