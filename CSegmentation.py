@@ -1,82 +1,68 @@
-import cv2
-import numpy as np
 import os
+import cv2
+import imghdr
+import numpy as np
 
-def segment_images(source_folder, destination_folder):
-    # Crea el directorio de destino si no existe
-    if not os.path.exists(destination_folder):
-        os.makedirs(destination_folder)
+def recortar_lunares(origen, destino):
+    # Obtener la lista de archivos en la carpeta de origen
+    archivos = os.listdir(origen)
 
-    # Obtén la lista de archivos de imagen en el directorio de origen
-    image_files = [f for f in os.listdir(source_folder) if f.endswith(('.jpg', '.jpeg', '.png'))]
+    for archivo in archivos:
+        ruta_origen = os.path.join(origen, archivo)
+        ruta_destino = os.path.join(destino, archivo)
 
-    for image_file in image_files:
-        # Verifica si la imagen ya ha sido procesada anteriormente
-        if image_file.startswith('listo'):
-            print(f"La imagen {image_file} ya ha sido procesada. Se omite.")
-            continue
-        
-        # Lee la imagen
-        image_path = os.path.join(source_folder, image_file)
-        img = cv2.imread(image_path)
+        # Verificar si el archivo es una imagen (JPEG, JPG, PNG)
+        if imghdr.what(ruta_origen) in ['jpeg', 'jpg', 'png']:
+            # Leer la imagen de la carpeta de origen
+            imagen = cv2.imread(ruta_origen)
 
-        # Realiza la segmentación aquí
-        # Puedes utilizar técnicas como umbralización, segmentación basada en color, etc.
-        # Asegúrate de obtener una máscara que destaque la parte del lunar o herida
+            if imagen is not None:
+                # Aplicar umbralización para segmentar los lunares o lesiones cutáneas
+                gris = cv2.cvtColor(imagen, cv2.COLOR_BGR2GRAY)
+                _, umbral = cv2.threshold(gris, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
 
-        # Aplica un filtro de mediana para reducir el ruido
-        filtered_img = cv2.medianBlur(img, 5)
+                # Encontrar los contornos de los objetos en la imagen umbralizada
+                contornos, _ = cv2.findContours(umbral, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
-        # Ejemplo de segmentación mediante umbralización simple
-        gray = cv2.cvtColor(filtered_img, cv2.COLOR_BGR2GRAY)
-        _, threshold = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+                # Encontrar el contorno de área máxima
+                max_area = 0
+                max_contorno = None
+                for contorno in contornos:
+                    area = cv2.contourArea(contorno)
+                    if area > max_area:
+                        max_area = area
+                        max_contorno = contorno
 
-        # Aplica operaciones morfológicas para mejorar la segmentación
-        kernel = np.ones((3, 3), np.uint8)
-        threshold = cv2.morphologyEx(threshold, cv2.MORPH_OPEN, kernel, iterations=6)
-        threshold = cv2.morphologyEx(threshold, cv2.MORPH_CLOSE, kernel, iterations=6)
+                # Crear una máscara en blanco con el mismo tamaño que la imagen original
+                mascara = np.zeros_like(imagen, dtype=np.uint8)
 
-        # Encuentra los contornos de la segmentación
-        contours, _ = cv2.findContours(threshold, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+                # Dibujar el contorno de área máxima en la máscara
+                cv2.drawContours(mascara, [max_contorno], -1, (255, 255, 255), thickness=cv2.FILLED)
 
-        # Encuentra el contorno más grande
-        largest_contour = max(contours, key=cv2.contourArea)
+                # Ajustar el tamaño del kernel y el número de iteraciones para suavizar los bordes
+                kernel_size = (7, 7)  # Ajusta el tamaño del kernel, por ejemplo, (3, 3) o (7, 7)
+                dilate_iterations = 5  # Ajusta el número de iteraciones de dilatación, por ejemplo, 1 o 3
+                erode_iterations = 3  # Ajusta el número de iteraciones de erosión, por ejemplo, 1 o 2
 
-        # Crea una máscara en blanco del tamaño de la imagen original
-        mask = np.zeros_like(img)
+                # Aplicar operaciones de dilatación y erosión para suavizar los bordes
+                kernel = np.ones(kernel_size, np.uint8)
+                mascara = cv2.dilate(mascara, kernel, iterations=dilate_iterations)
+                mascara = cv2.erode(mascara, kernel, iterations=erode_iterations)
 
-        # Dibuja el contorno en la máscara
-        cv2.drawContours(mask, [largest_contour], 0, (255, 255, 255), thickness=cv2.FILLED)
+                # Convertir la imagen a modo RGBA con fondo transparente
+                recortada_rgba = cv2.cvtColor(imagen, cv2.COLOR_BGR2BGRA)
+                recortada_rgba[:, :, 3] = mascara[:, :, 0]
 
+                # Guardar la imagen recortada en formato PNG con fondo transparente en la carpeta de destino
+                cv2.imwrite(ruta_destino.replace('.jpg', '.png'), recortada_rgba)
+            else:
+                print(f"Error al leer la imagen: {ruta_origen}")
+        else:
+            print(f"Formato de archivo no admitido: {ruta_origen}")
 
+# Solicitar la carpeta de origen y la carpeta de destino al usuario
+carpeta_origen = "/Users/natty/Desktop/prueba_mejorada"
+carpeta_destino = "/Users/natty/Desktop/prueba_destino"
 
-
-        # Aplica la máscara a la imagen original para obtener la parte segmentada en color
-        #segmented_img = cv2.bitwise_and(img, img, mask=threshold)
-        segmented_img = cv2.bitwise_and(img, mask)
-
-        # Cambia el nombre de la imagen origen procesada agregando el prefijo "listo"
-        processed_image_name = 'listo_' + image_file
-        processed_image_path = os.path.join(source_folder, processed_image_name)
-        os.rename(image_path, processed_image_path)
-        print(f"Imagen procesada renombrada: {processed_image_path}")
-
-        # Guarda la imagen segmentada en el directorio de destino
-        #segmented_image_name = 'segmentada_' + image_file
-        segmented_image_name = 'segmentada_' + image_file.split('.')[0] + '.png'
-        segmented_image_path = os.path.join(destination_folder, segmented_image_name)
-        #destination_path = os.path.join(destination_folder, segmented_image_name)
-        #cv2.imwrite(destination_path, segmented_img)
-
-        #print(f"Imagen segmentada guardada: {destination_path}")
-        cv2.imwrite(segmented_image_path, segmented_img, [cv2.IMWRITE_PNG_COMPRESSION, 0])
-        print(f"Parte segmentada guardada: {segmented_image_path}")
-
-    print("Segmentación de imágenes completada.")
-
-
-# Ejemplo de uso
-source_folder = "/Users/natty/Desktop/prueba_origen"
-destination_folder = "/Users/natty/Desktop/prueba_destino"
-
-segment_images(source_folder, destination_folder)
+# Llamar a la función para recortar los lunares o lesiones cutáneas
+recortar_lunares(carpeta_origen, carpeta_destino)
