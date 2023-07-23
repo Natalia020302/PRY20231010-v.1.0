@@ -3,9 +3,14 @@ import pandas as pd
 import shutil
 
 # Define the paths to the folders and Excel file
-image_folder = "/Users/natty/Desktop/IMAGENES_ISIC/ISIC_2020_IMG_TRAIN"
-filtered_folder = "/Users/natty/Desktop/IMAGENES_ISIC/solo_img_melanoma"
-excel_file = "/Users/natty/Desktop/IMAGENES_ISIC/ISIC_2020_Training_GroundTruthl.xlsx"
+#image_folder = "/Users/natty/Desktop/IMAGENES_ISIC/ISIC_2020_IMG_TRAIN"
+#filtered_folder = "/Users/natty/Desktop/IMAGENES_ISIC/solo_img_melanoma"
+#excel_file = "/Users/natty/Desktop/IMAGENES_ISIC/ISIC_2020_Training_GroundTruthl.xlsx"
+
+# Define the paths to the folders and Excel file
+image_folder = "/Users/natty/Desktop/IMAGENES_ISIC_2019/ISIC_2019_Training_Input"
+filtered_folder = "/Users/natty/Desktop/IMAGENES_ISIC_2019/solo_melanoma"
+excel_file = "/Users/natty/Desktop/IMAGENES_ISIC_2019/ISIC_2019_Training_Metadata_complete.xlsx"
 
 # Load the Excel file into a pandas DataFrame
 df = pd.read_excel(excel_file)

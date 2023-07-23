@@ -1,8 +1,8 @@
 from PIL import Image, ImageEnhance, ImageFilter
 import os
 
-ruta_carpeta = 'C:/Users/FLAVIA/Downloads/codigomodel/mejoramiento/origen'
-ruta_destino = 'C:/Users/FLAVIA/Downloads/codigomodel/mejoramiento/destinomejor'
+ruta_carpeta = '/Users/natty/Desktop/PRUEBASHORT/200_originales'
+ruta_destino = '/Users/natty/Desktop/PRUEBASHORT/mejor_200'
 
 # Obtener una lista de los archivos que ya han sido procesados
 archivos_procesados = [nombre_archivo for nombre_archivo in os.listdir(ruta_destino) if nombre_archivo.startswith('imagenprocesada')]

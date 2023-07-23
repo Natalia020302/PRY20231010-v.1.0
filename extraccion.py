@@ -52,6 +52,6 @@ def extraer_caracteristicas(carpeta_origen, carpeta_destino):
             archivo_txt.write(f"Diametro: {diametro}\n")
             archivo_txt.write(f"Bordes: {valor_bordes:.4f}\n") # Agregar el valor del borde al archivo de texto
 
-carpeta_origen = "C:/Users/FLAVIA/Downloads/codigomodel/segmentacion/destinosegm"
-carpeta_destino = "C:/Users/FLAVIA/Downloads/codigomodel/extraccion/destinocaract"
+carpeta_origen = "/Users/natty/Desktop/PRUEBASHORT/segmen_200"
+carpeta_destino = "/Users/natty/Desktop/PRUEBASHORT/extra_200"
 extraer_caracteristicas(carpeta_origen, carpeta_destino)

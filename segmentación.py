@@ -5,6 +5,7 @@ import numpy as np
 
 def recortar_lunares(origen, destino, margen_superior, margen_inferior, margen_izquierdo, margen_derecho):
     # Obtener la lista de archivos en la carpeta de origen
+    #https://www.whizlabs.com/learn/course/aws-solutions-architect-associate/153/quiz/60504/report/7316821 
     archivos = os.listdir(origen)
 
     for archivo in archivos:
@@ -66,8 +67,8 @@ def recortar_lunares(origen, destino, margen_superior, margen_inferior, margen_i
             print(f"Formato de archivo no admitido: {ruta_origen}")
 
 # Solicitar la carpeta de origen y la carpeta de destino al usuario
-carpeta_origen = "C:/Users/FLAVIA/Downloads/codigomodel/mejoramiento/destinomejor"
-carpeta_destino = "C:/Users/FLAVIA/Downloads/codigomodel/segmentacion/destinosegm"
+carpeta_origen = "/Users/natty/Desktop/PRUEBASHORT/mejor_200"
+carpeta_destino = "/Users/natty/Desktop/PRUEBASHORT/segmen_200"
 
 # Solicitar los márgenes de recorte al usuario
 margen_superior = 200  # 100 para las de tamaño pequeño

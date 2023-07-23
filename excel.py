@@ -1,9 +1,8 @@
 import csv
 import os
 
-# Rutas de los archivos
-ruta_txt = "C:/Users/FLAVIA/Downloads/codigomodel/extraccion/destinocaract"
-ruta_csv = "C:/Users/FLAVIA/Downloads/codigomodel/extraccion/destinocaract/excel.csv"
+ruta_txt = "/Users/natty/Desktop/PRUEBASHORT/extra_200"
+ruta_csv = "/Users/natty/Desktop/PRUEBASHORT/extra_200/excel2.csv"
 
 # Leer el archivo CSV y crear un diccionario con los nombres y características
 diccionario_caracteristicas = {}
