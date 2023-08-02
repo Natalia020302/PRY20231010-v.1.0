@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Formulario de Datos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+
+        .navbar {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 80vw; /* Ancho del contenedor en 80% del ancho de la ventana gráfica */
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%; /* Ajuste de ancho al 100% del contenedor */
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        button {
+            width: 100%; /* Ajuste de ancho al 100% del contenedor */
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Estilos responsive */
+        @media screen and (max-width: 480px) {
+            .container {
+                width: 90vw; /* Ancho del contenedor en 90% del ancho de la ventana gráfica en dispositivos móviles */
+            }
+
+            .form-group {
+                margin-bottom: 15px; /* Márgenes inferiores más pequeños para dispositivos móviles */
+            }
+
+            input[type="text"],
+            select {
+                width: 100%; /* Ajuste de ancho al 100% del contenedor en dispositivos móviles */
+                margin-bottom: 10px; /* Márgenes inferiores más pequeños para dispositivos móviles */
+            }
+
+            button {
+                margin-top: 10px; /* Márgenes superiores más grandes para el botón en dispositivos móviles */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        App Tesis
+    </div>
+
+    <div class="container">
+        <h2>Formulario de Datos</h2>
+        <form>
+            <div class="form-group">
+                <label for="asimetria">Asimetría:</label>
+                <input type="text" id="asimetria" name="asimetria" required>
+            </div>
+
+            <div class="form-group">
+                <label for="color">Color:</label>
+                <input type="text" id="color" name="color" required>
+            </div>
+
+            <div class="form-group">
+                <label for="diametro">Diámetro:</label>
+                <input type="text" id="diametro" name="diametro" required>
+            </div>
+
+            <div class="form-group">
+                <label for="bordes">Bordes:</label>
+                <select id="bordes" name="bordes" required>
+                    <option value="">Seleccione una opción</option>
+                    <option value="Lisos">Lisos</option>
+                    <option value="Irregulares">Irregulares</option>
+                    <option value="Ondulados">Ondulados</option>
+                </select>
+            </div>
+
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+</body>
+</html>
