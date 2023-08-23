@@ -67,14 +67,14 @@ def recortar_lunares(origen, destino, margen_superior, margen_inferior, margen_i
             print(f"Formato de archivo no admitido: {ruta_origen}")
 
 # Solicitar la carpeta de origen y la carpeta de destino al usuario
-carpeta_origen = "/Users/natty/Desktop/PRUEBASHORT/mejor_200"
-carpeta_destino = "/Users/natty/Desktop/PRUEBASHORT/segmen_200"
+carpeta_origen = "/Users/natty/Desktop/4_quitar_vellos"
+carpeta_destino = "/Users/natty/Desktop/5_segmentacion"
 
 # Solicitar los márgenes de recorte al usuario
-margen_superior = 200  # 100 para las de tamaño pequeño
-margen_inferior = 200  # 100 para las de tamaño pequeño
-margen_izquierdo = 370  # 100 para las de tamaño pequeño
-margen_derecho = 370  # 100 para las de tamaño pequeño
+margen_superior = 150  
+margen_inferior = 150  
+margen_izquierdo = 120  
+margen_derecho = 120 
 
 # Llamar a la función para recortar los lunares o lesiones cutáneas
 recortar_lunares(carpeta_origen, carpeta_destino, margen_superior, margen_inferior, margen_izquierdo, margen_derecho)
