@@ -5,7 +5,6 @@ import numpy as np
 
 def recortar_lunares(origen, destino, margen_superior, margen_inferior, margen_izquierdo, margen_derecho):
     # Obtener la lista de archivos en la carpeta de origen
-    #https://www.whizlabs.com/learn/course/aws-solutions-architect-associate/153/quiz/60504/report/7316821 
     archivos = os.listdir(origen)
 
     for archivo in archivos:
