@@ -4,5 +4,4 @@
 ## Tecnologías 🛠️
 
 * [Python] - Lenguaje de programación
-* [PostgreSQL] - Base de datos relacional
 * [SVM] - Algoritmo de ML
