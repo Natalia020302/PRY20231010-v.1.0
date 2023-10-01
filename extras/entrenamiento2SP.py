@@ -5,21 +5,21 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 
 # Directorio de las imágenes
-directorio_imagenes = "/Users/natty/Desktop/PRUEBASHORT/combinado_segmentadas"
+bucket_imagenes = "/Users/natty/Desktop/PRUEBAFINALTB2/SEGMENTADAS"
 
 # Rutas de los archivos de características para entrenamiento y pruebas
-ruta_entrenamiento = "/Users/natty/Desktop/PRUEBASHORT/combinado_carac_entre"
-ruta_pruebas = "/Users/natty/Desktop/PRUEBASHORT/combinado_carac_test"
+bucket_entrenamiento = "/Users/natty/Desktop/PRUEBAFINALTB2/ENTRENAMIENTO"
+bucket_pruebas = "/Users/natty/Desktop/PRUEBAFINALTB2/TEST"
 
 # Lista para almacenar las características y las etiquetas
 caracteristicas = []
 etiquetas = []
 
 # Recorrer los archivos de características para entrenamiento
-for archivo in os.listdir(ruta_entrenamiento):
+for archivo in os.listdir(bucket_entrenamiento):
     if archivo.endswith(".txt"):
         # Leer el archivo de características
-        ruta_archivo = os.path.join(ruta_entrenamiento, archivo)
+        ruta_archivo = os.path.join(bucket_entrenamiento, archivo)
         with open(ruta_archivo, "r") as f:
             lineas = f.readlines()
 
@@ -42,10 +42,10 @@ for archivo in os.listdir(ruta_entrenamiento):
         etiquetas.append(melanoma)
 
 # Recorrer los archivos de características para pruebas
-for archivo in os.listdir(ruta_pruebas):
+for archivo in os.listdir(bucket_pruebas):
     if archivo.endswith(".txt"):
         # Leer el archivo de características
-        ruta_archivo = os.path.join(ruta_pruebas, archivo)
+        ruta_archivo = os.path.join(bucket_pruebas, archivo)
         with open(ruta_archivo, "r") as f:
             lineas = f.readlines()
 
@@ -87,7 +87,8 @@ clf.fit(X_train, y_train)
 y_pred = clf.predict(X_test)
 
 # Generar reporte de clasificación
-reporte = classification_report(y_test, y_pred, labels=[1], target_names=['maligno'])
+reporte = classification_report(y_test, y_pred, labels=[1], target_names=['malignant'])
+print(reporte)
 reporte_lines = reporte.split('\n')
 precision = float(reporte_lines[2].split()[3])
 recall = float(reporte_lines[2].split()[4])

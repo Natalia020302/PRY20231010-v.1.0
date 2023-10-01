@@ -34,10 +34,10 @@ def calcular_diametro(imagen):
     diametro = np.linalg.norm(punto_derecho - punto_izquierdo)
     return diametro, punto_izquierdo, punto_derecho
 
-def extraer_caracteristicas(carpeta_origen, carpeta_destino):
-    archivos = os.listdir(carpeta_origen)
+def extraer_caracteristicas(bucket_origen, bucket_destino):
+    archivos = os.listdir(bucket_origen)
     for archivo in archivos:
-        ruta_origen = os.path.join(carpeta_origen, archivo)
+        ruta_origen = os.path.join(bucket_origen, archivo)
         imagen = cv2.imread(ruta_origen)
         asimetria = calcular_asimetria(imagen)
         variacion_color = calcular_variacion_color(imagen)
@@ -45,13 +45,13 @@ def extraer_caracteristicas(carpeta_origen, carpeta_destino):
         diametro, punto_izquierdo, punto_derecho = calcular_diametro(imagen)
         valor_bordes = calcular_borde_irisado(imagen) # Obtener el valor del borde irisado
         nombre_archivo = os.path.splitext(archivo)[0] + ".txt"
-        ruta_destino = os.path.join(carpeta_destino, nombre_archivo)
+        ruta_destino = os.path.join(bucket_destino, nombre_archivo)
         with open(ruta_destino, "w") as archivo_txt:
             archivo_txt.write(f"Asimetria: {asimetria:.4f}\n")
             archivo_txt.write(f"Color: {variacion_color:.4f}\n")
             archivo_txt.write(f"Diametro: {diametro}\n")
             archivo_txt.write(f"Bordes: {valor_bordes:.4f}\n") # Agregar el valor del borde al archivo de texto
 
-carpeta_origen = "/Users/natty/Desktop/PRUEBASHORT/segmen_200"
-carpeta_destino = "/Users/natty/Desktop/PRUEBASHORT/extra_200"
-extraer_caracteristicas(carpeta_origen, carpeta_destino)
+bucket_origen = "/Users/natty/Desktop/PRUEBASHORT/segmenfinalciclo"
+bucket_destino = "/Users/natty/Desktop/PRUEBASHORT/extracfinal"
+extraer_caracteristicas(bucket_origen, bucket_destino)

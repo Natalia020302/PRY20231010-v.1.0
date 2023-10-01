@@ -1,20 +1,20 @@
 from PIL import Image, ImageEnhance, ImageFilter
 import os
 
-ruta_carpeta = '/Users/natty/Desktop/2_data_augmentation'
-ruta_destino = '/Users/natty/Desktop/3_reajustenitidez'
+carpeta_origen = '/Users/natty/Desktop/2_data_augmentation'
+carpeta_destino = '/Users/natty/Desktop/3_reajustenitidez'
 
 # Obtener una lista de los archivos que ya han sido procesados
-archivos_procesados = [nombre_archivo for nombre_archivo in os.listdir(ruta_destino) if nombre_archivo.startswith('imagenprocesada')]
+archivos_procesados = [nombre_archivo for nombre_archivo in os.listdir(carpeta_destino) if nombre_archivo.startswith('imagenprocesada')]
 
 # Obtener una lista de las nuevas imágenes que no han sido procesadas
-nuevos_archivos = [nombre_archivo for nombre_archivo in os.listdir(ruta_carpeta) if not nombre_archivo.startswith('imagenoriginal') and nombre_archivo != '.DS_Store']
+nuevos_archivos = [nombre_archivo for nombre_archivo in os.listdir(carpeta_origen) if not nombre_archivo.startswith('imagenoriginal') and nombre_archivo != '.DS_Store']
 
 # Obtener el último número de imagen procesada
 ultimo_numero = len(archivos_procesados)
 
 for nombre_archivo in nuevos_archivos:
-    ruta_original = os.path.join(ruta_carpeta, nombre_archivo)
+    ruta_original = os.path.join(carpeta_origen, nombre_archivo)
     nombre_sin_extension, extension = os.path.splitext(nombre_archivo)
 
     # Incrementar el contador de imágenes procesadas
@@ -29,8 +29,8 @@ for nombre_archivo in nuevos_archivos:
 
     if extension in ['.jpg', '.jpeg', '.png', '.gif']:
         # Definir las dimensiones límite
-        alto_minimo = 1800
-        alto_maximo = 2000
+        alto_minimo = 1100
+        alto_maximo = 1500
 
         # Calcular nuevo alto manteniendo la relación de aspecto
         nuevo_alto = min(max(alto, alto_minimo), alto_maximo)
@@ -43,12 +43,12 @@ for nombre_archivo in nuevos_archivos:
         imagen_enfocada = imagen_redimensionada.filter(ImageFilter.UnsharpMask(radius=2, percent=150, threshold=3))
 
         # Aumentar el contraste de la imagen
-        factor_contraste = 1.5  # Ajusta este valor para aumentar o disminuir el contraste
+        factor_contraste = 1.2  # Ajusta este valor para aumentar o disminuir el contraste
         realce_contraste = ImageEnhance.Contrast(imagen_enfocada)
         imagen_contraste = realce_contraste.enhance(factor_contraste)
 
         # Ajustar el brillo de la imagen
-        factor_brillo = 3  # Ajusta este valor para hacer la imagen más oscura (0.0 - 1.0)
+        factor_brillo = 0.7  # Ajusta este valor para hacer la imagen más oscura (0.0 - 1.0)
         realce_brillo = ImageEnhance.Brightness(imagen_contraste)
         imagen_oscurecida = realce_brillo.enhance(factor_brillo)
 
@@ -58,5 +58,5 @@ for nombre_archivo in nuevos_archivos:
         imagen_nitidez = realce_nitidez.enhance(factor_nitidez)
 
         # Guardar la imagen procesada en el destino con el nombre correspondiente
-        ruta_destino_procesado = os.path.join(ruta_destino, f"{nombre_procesado}{extension}")
+        ruta_destino_procesado = os.path.join(carpeta_destino, f"{nombre_procesado}{extension}")
         imagen_nitidez.save(ruta_destino_procesado, format='JPEG', quality=95)
